@@ -1,0 +1,12 @@
+.googleSignIn {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  margin: auto;
+  padding: 16px 16px;
+}
+.googleButton {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+}

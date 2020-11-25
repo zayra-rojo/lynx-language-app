@@ -1,0 +1,9 @@
+/* .ant-menu.ant-menu-dark .ant-menu-item-selected.customclass {
+  color: '#B039CC';
+} */
+.ant-menu-item-selected {
+  color: #b039cc;
+}
+.active-class {
+  background-color: purple;
+}
