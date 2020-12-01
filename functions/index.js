@@ -9,13 +9,13 @@ const app = express();
 admin.initializeApp();
 
 // Middleware
-app.use((req, res, next) => {
-  res.append('Access-Control-Allow-Origin', ['*']);
-  res.append('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-  res.append('Access-Control-Allow-Headers', 'Content-Type');
-  next();
-});
-
+// app.use((req, res, next) => {
+//   res.append('Access-Control-Allow-Origin', ['*']);
+//   res.append('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+//   res.append('Access-Control-Allow-Headers', 'Content-Type');
+//   next();
+// });
+app.use(cors);
 app.post('/addFlashcard', async (req, res) => {
   const userUid = req.body.uid;
 
@@ -33,6 +33,9 @@ app.post('/addFlashcard', async (req, res) => {
   console.log('outside await getSong...song=', musixmatchParams.song);
 
   //TODO: get spotify uri of song
+  // checking
+  let token = await getSpotifyAccessToken();
+  console.log('outside... token= ', token);
 
   const cardInfo = {
     front: req.body.front,
@@ -79,5 +82,34 @@ async function saveFlashcard(user_uid, cardInfo) {
       source: cardInfo.source,
       spotifySongUri: cardInfo.spotifySongUri,
     });
+}
+
+async function getSpotifyAccessToken() {
+  try {
+    const resp = await axios({
+      url: 'https://accounts.spotify.com/api/token',
+      method: 'post',
+      params: {
+        grant_type: 'client_credentials',
+      },
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      auth: {
+        username: config.spotify.CLIENT_ID,
+        password: config.spotify.CLIENT_SECRET,
+      },
+    });
+
+    // checking
+    console.log(
+      'inside getSpotifyAccessToken() response.data.access_token: ',
+      resp.data.access_token
+    );
+    return resp.data.access_token;
+  } catch (error) {
+    console.log('error getting spotify access token: ', error);
+  }
 }
 // https://api.musixmatch.com/ws/1.1/track.search?format=jsonp&callback=callback&q_lyrics=bonjour&f_music_genre_id=14&f_lyrics_language=fr&s_track_rating=desc&page_size=5&page=1&apikey=ee5932e58d6a546d292e753097d44d47
