@@ -3,9 +3,19 @@ var axios = require('axios');
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 const cors = require('cors')({ origin: true });
+// const cors = require('cors');
 const config = require('./config.js');
 
 const app = express();
+// app.use(function (req, res, next) {
+//   res.header('Access-Control-Allow-Origin', '*');
+//   res.header(
+//     'Access-Control-Allow-Headers',
+//     'Origin, X-Requested-With, Content-Type, Accept'
+//   );
+//   next();
+// });
+app.use(cors);
 admin.initializeApp();
 
 // Middleware
@@ -15,8 +25,11 @@ admin.initializeApp();
 //   res.append('Access-Control-Allow-Headers', 'Content-Type');
 //   next();
 // });
-app.use(cors);
+// app.use(cors({ origin: '*' }));
+
 app.post('/addFlashcard', async (req, res) => {
+  if (!req.body) return res.sendStatus(400);
+
   const userUid = req.body.uid;
 
   const musixmatchParams = {
@@ -36,6 +49,27 @@ app.post('/addFlashcard', async (req, res) => {
   // checking
   let token = await getSpotifyAccessToken();
   console.log('outside... token= ', token);
+
+  //await getSpotifyUri(token, musixmatchParams.song);
+  try {
+    const sUri = await axios({
+      url:
+        'https://api.spotify.com/v1/search?q=' +
+        musixmatchParams.song +
+        '&type=track',
+      method: 'GET',
+      headers: {
+        Authorization: 'Bearer ' + token,
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    });
+
+    console.log('inside getSpotifyUri, sUri: ', sUri);
+    //return sUri;
+  } catch (error) {
+    console.log('error in get spotify uri: ', error);
+  }
 
   const cardInfo = {
     front: req.body.front,
@@ -112,4 +146,24 @@ async function getSpotifyAccessToken() {
     console.log('error getting spotify access token: ', error);
   }
 }
+
+async function getSpotifyUri(token, song) {
+  try {
+    const sUri = await axios({
+      url: 'https://api.spotify.com/v1/search?q=' + song + '&type=track',
+      method: 'GET',
+      headers: {
+        Authorization: 'Bearer ' + token,
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    });
+
+    console.log('inside getSpotifyUri, sUri: ', sUri);
+    //return sUri;
+  } catch (error) {
+    console.log('error in get spotify uri: ', error);
+  }
+}
+
 // https://api.musixmatch.com/ws/1.1/track.search?format=jsonp&callback=callback&q_lyrics=bonjour&f_music_genre_id=14&f_lyrics_language=fr&s_track_rating=desc&page_size=5&page=1&apikey=ee5932e58d6a546d292e753097d44d47
