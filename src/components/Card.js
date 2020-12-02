@@ -14,12 +14,27 @@ const cardStyle = {
 };
 
 function SingleCard(props) {
+  let srcUrl =
+    'https://open.spotify.com/embed/track/' + props.cardObj.spotifySongUri;
+  console.log(
+    'inside SingleCard, spotifySongUri=',
+    props.cardObj.spotifySongUri
+  );
+
   return (
     <div>
       <Card hoverable={true} style={cardStyle} align='middle'>
         <Title level={2}>{props.cardObj.front}</Title>
         <Title level={3}>{props.cardObj.back}</Title>
         <Title level={3}>{props.cardObj.song}</Title>
+        <iframe
+          src={srcUrl}
+          width='300'
+          height='80'
+          frameborder='0'
+          allowtransparency='true'
+          allow='encrypted-media'
+        ></iframe>
       </Card>
       <br />
     </div>
