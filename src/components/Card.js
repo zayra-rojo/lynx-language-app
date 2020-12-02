@@ -16,7 +16,7 @@ const cardStyle = {
 function SingleCard(props) {
   return (
     <div>
-      <Card style={cardStyle} align='middle'>
+      <Card hoverable={true} style={cardStyle} align='middle'>
         <Title level={2}>{props.cardObj.front}</Title>
         <Title level={3}>{props.cardObj.back}</Title>
         <Title level={3}>{props.cardObj.song}</Title>

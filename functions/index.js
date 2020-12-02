@@ -106,7 +106,7 @@ async function getSpotifyUri(song) {
         'Content-Type': 'application/json',
       },
     });
-    return spotifyRes.data.tracks.items[0].uri;
+    return spotifyRes.data.tracks.items[0].id;
   } catch (error) {
     console.log('error in get spotify uri: ', error);
   }
