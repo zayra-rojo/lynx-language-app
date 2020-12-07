@@ -27,7 +27,7 @@ app.post('/addFlashcard', async (req, res) => {
     front: req.body.front,
     back: req.body.back,
     song: musixmatchParams.song,
-    source: req.body.source,
+    // source: req.body.source,
     spotifySongUri: spotifyUri,
   };
   await saveFlashcard(userUid, cardInfo);
@@ -69,7 +69,7 @@ async function saveFlashcard(user_uid, cardInfo) {
       front: cardInfo.front,
       back: cardInfo.back,
       song: cardInfo.song,
-      source: cardInfo.source,
+      // source: cardInfo.source,
       spotifySongUri: cardInfo.spotifySongUri,
     });
 }

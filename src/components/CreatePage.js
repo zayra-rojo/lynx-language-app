@@ -25,7 +25,7 @@ const cardStyle = {
 function CreatePage() {
   const [front, setFront] = React.useState(null);
   const [back, setBack] = React.useState(null);
-  const [source, setSource] = React.useState(null);
+  // const [source, setSource] = React.useState(null);
 
   const getUserSettings = async () => {
     const uid = auth.currentUser.uid;
@@ -59,7 +59,7 @@ function CreatePage() {
       front: front,
       back: back,
       song: '',
-      source: source,
+      // source: source,
       uid: uid,
       language_id: userSettings.language_id,
       genre_id: userSettings.genre_id,
@@ -117,7 +117,7 @@ function CreatePage() {
                     }}
                   />
                 </Form.Item>
-                <Form.Item
+                {/* <Form.Item
                   name={['flashcard', 'source']}
                   label='source'
                   rules={[{ required: false }]}
@@ -128,7 +128,7 @@ function CreatePage() {
                       setSource(e.target.value);
                     }}
                   />
-                </Form.Item>
+                </Form.Item> */}
               </Form>
               <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
                 <Button onClick={onSubmit} type='primary' htmlType='submit'>
