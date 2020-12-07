@@ -1,6 +1,8 @@
 import React from 'react';
-import { Form, Input, Typography, Layout, Row, Col, Button, Card } from 'antd';
+// import './layout.css';
+import { Divider, Typography, Row, Col, Skeleton, Card } from 'antd';
 const { Title } = Typography;
+var Spinner = require('react-spinkit');
 
 const cardStyle = {
   width: '400px',
@@ -14,6 +16,8 @@ const cardStyle = {
 };
 
 function SingleCard(props) {
+  const [isLoading, setIsLoading] = React.useState(true);
+
   let srcUrl =
     'https://open.spotify.com/embed/track/' + props.cardObj.spotifySongUri;
   console.log(
@@ -21,20 +25,36 @@ function SingleCard(props) {
     props.cardObj.spotifySongUri
   );
 
+  const hideSpinner = () => {
+    setIsLoading(false);
+    console.log('hidespinner');
+  };
   return (
     <div>
       <Card hoverable={true} style={cardStyle} align='middle'>
-        <Title level={2}>{props.cardObj.front}</Title>
+        <Divider>
+          <Title level={2}>{props.cardObj.front}</Title>
+        </Divider>
+
         <Title level={3}>{props.cardObj.back}</Title>
-        <Title level={3}>{props.cardObj.song}</Title>
-        <iframe
-          src={srcUrl}
-          width='300'
-          height='80'
-          frameborder='0'
-          allowtransparency='true'
-          allow='encrypted-media'
-        ></iframe>
+        {/* <Title level={3}>{props.cardObj.song}</Title> */}
+        {isLoading ? (
+          <Spinner name='line-scale-pulse-out-rapid' color='purple' />
+        ) : null}
+        <div>
+          <iframe
+            src={srcUrl}
+            style={
+              isLoading ? { visibility: 'hidden' } : { visibility: 'visible' }
+            }
+            width='300'
+            height='80'
+            onLoad={hideSpinner}
+            frameborder='0'
+            allowtransparency='true'
+            allow='encrypted-media'
+          ></iframe>
+        </div>
       </Card>
       <br />
     </div>

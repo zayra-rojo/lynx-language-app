@@ -2,12 +2,14 @@ import React from 'react';
 import PracticeCard from './PracticeCard';
 import { auth, firestore } from '../utils/firebase';
 import { Typography, Layout, Menu, Row, Col, Button, Card } from 'antd';
+import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 const { Title } = Typography;
 const { Header, Footer, Sider, Content } = Layout;
 
 function PracticePage() {
   const [deck, setDeck] = React.useState([]);
   const [word, setWord] = React.useState();
+  const [index, setIndex] = React.useState(0);
   const [isLoading, setIsLoading] = React.useState(true);
   const [spotifyUri, setSpotifyUri] = React.useState();
 
@@ -42,40 +44,41 @@ function PracticePage() {
     // set word to be the back of flashcard (english meaning)
     // gets the object that contains the current word
     console.log('Printing all flashcards first... ', deck);
-    let result;
+    let result = deck[index];
 
-    for (var i = 0; i < deck.length; i++) {
-      if (deck[i]['front'] === word || deck[i]['back'] === word) {
-        result = deck[i];
-        break;
-      }
-    }
-
-    console.log('In onFlip callback... found result flashcard is: ', result);
     word == result.front ? setWord(result.back) : setWord(result.front);
     setSpotifyUri(result.spotifySongUri);
-    console.log('in onFlip, spotifyuri=', result.spotifySongUri);
-    console.log('in onFlip, word.front=', result.front);
   };
 
   const onNext = (e) => {
     e.preventDefault();
-    console.log('in onNext...');
-    // set word to be the next flashcard (front) in the deck array
-    // if at end of array, then reset to 1st card
-    for (let i = 0; i < deck.length; i++) {
-      if (deck[i].front == word || deck[i].back == word) {
-        if (i + 1 < deck.length) {
-          setWord(deck[i + 1].front);
-          setSpotifyUri(deck[i + 1].spotifySongUri);
-          console.log('in onNext, spotifyuri=', spotifyUri);
-        } else {
-          setWord(deck[0].front);
-          setSpotifyUri(deck[0].spotifySongUri);
-          console.log('in onNext, spotifyuri=', spotifyUri);
-        }
-        break;
-      }
+
+    if (index + 1 >= deck.length) {
+      setWord(deck[0].front);
+      setSpotifyUri(deck[0].spotifySongUri);
+      setIndex(0);
+    } else {
+      console.log('previous index: ', index);
+      setWord(deck[index + 1].front);
+      setSpotifyUri(deck[index + 1].spotifySongUri);
+      console.log('in onNext, spotifyuri=', spotifyUri);
+      setIndex(index + 1);
+      console.log('new index index (may be async): ', index);
+    }
+  };
+
+  const onBack = (e) => {
+    e.preventDefault();
+    console.log('in onBack...');
+
+    if (index - 1 < 0) {
+      // do nothing
+      console.log('cant go back, index=', index);
+    } else {
+      console.log('going back...');
+      setWord(deck[index - 1].front);
+      setSpotifyUri(deck[index - 1].spotifySongUri);
+      setIndex(index - 1);
     }
   };
 
@@ -88,6 +91,7 @@ function PracticePage() {
       setSpotifyUri(deck[0].spotifySongUri);
       console.log('in onStart, spotifyuri=', spotifyUri);
     }
+    setIndex(0);
   };
 
   const setInitial = () => {
@@ -105,17 +109,42 @@ function PracticePage() {
     <>
       {isLoading ? null : (
         <div align='middle'>
-          <Title level={1}>Your deck!</Title>
-          <Row>
-            <Col span={8} offset={8}>
+          <Title level={1}>Practice</Title>
+          <Row justify='center' align='middle' gutter={[16, 16]}>
+            <Col>
+              <Title level={2}>
+                <b>{index + 1 + ' / ' + deck.length}</b>
+              </Title>
+            </Col>
+          </Row>
+          <Row justify='center' align='middle' gutter={[16, 16]}>
+            <Col>
+              <Button
+                type='primary'
+                shape='circle'
+                size='large'
+                htmlType='submit'
+                onClick={onBack}
+                icon={<LeftOutlined />}
+              ></Button>
+            </Col>
+
+            <Col>
               {word == null ? setInitial() : null}
               <PracticeCard word={word} spotifySongUri={spotifyUri} />
               <Button onClick={onFlip} type='primary' htmlType='submit'>
                 Flip
               </Button>{' '}
-              <Button onClick={onNext} type='primary' htmlType='submit'>
-                Next
-              </Button>
+            </Col>
+            <Col>
+              <Button
+                type='primary'
+                shape='circle'
+                size='large'
+                htmlType='submit'
+                onClick={onNext}
+                icon={<RightOutlined />}
+              ></Button>
             </Col>
           </Row>
         </div>

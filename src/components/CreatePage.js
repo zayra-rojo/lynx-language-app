@@ -1,7 +1,17 @@
 import React from 'react';
 import axios from 'axios';
 import { auth, firestore } from '../utils/firebase';
-import { Form, Input, Typography, Layout, Row, Col, Button, Card } from 'antd';
+import {
+  Divider,
+  Form,
+  Input,
+  Typography,
+  Layout,
+  Row,
+  Col,
+  Button,
+  Card,
+} from 'antd';
 const { Header, Footer, Sider, Content } = Layout;
 const { Title } = Typography;
 
@@ -14,12 +24,12 @@ const validateMessages = {
   required: '${label} is required!',
 };
 const cardStyle = {
-  width: '400px',
+  width: '430px',
   // height: 'px',
 
   borderRadius: '16px',
-  marginRight: '24px',
-  padding: '20px 40px',
+  marginRight: '20px',
+  padding: '10px 20px',
   boxShadow: '5px 8px 24px 5px rgba(208, 216, 243, 0.6)',
 };
 function CreatePage() {
@@ -65,6 +75,8 @@ function CreatePage() {
       genre_id: userSettings.genre_id,
     };
     console.log('onSubmit...');
+    setBack('');
+    setFront('');
     console.log(data);
     const saving = await axios.post(
       'https://us-central1-language-learning-app-300.cloudfunctions.net/webAPI/addFlashcard',
@@ -74,18 +86,21 @@ function CreatePage() {
 
   return (
     <div>
+      <Row justify='center' style={{ minHeight: '15vh' }}>
+        <Title level={1}>Create</Title>
+      </Row>
       <Row
         Row
         type='flex'
         justify='center'
-        align='middle'
-        style={{ minHeight: '100vh' }}
+        // align='middle'
       >
         <Col>
-          <Card align='middle' style={cardStyle}>
-            <Title level={2}>Add new flashcard</Title>
+          <Card style={cardStyle}>
+            <Divider>
+              <Title level={2}>Create a flashcard</Title>
+            </Divider>
 
-            <br />
             <div>
               <Form
                 {...layout}
@@ -93,45 +108,49 @@ function CreatePage() {
                 // onFinish={onSubmit}
                 validateMessages={validateMessages}
               >
-                <Form.Item
-                  name={['flashcard', 'front']}
-                  label='front'
-                  rules={[{ required: true }]}
-                >
-                  <Input
-                    name={front}
-                    onChange={(e) => {
-                      setFront(e.target.value);
-                    }}
-                  />
-                </Form.Item>
-                <Form.Item
-                  name={['flashcard', 'back']}
-                  label='back'
-                  rules={[{ required: true }]}
-                >
-                  <Input
-                    name={back}
-                    onChange={(e) => {
-                      setBack(e.target.value);
-                    }}
-                  />
-                </Form.Item>
-                {/* <Form.Item
-                  name={['flashcard', 'source']}
-                  label='source'
-                  rules={[{ required: false }]}
-                >
-                  <Input
-                    name={source}
-                    onChange={(e) => {
-                      setSource(e.target.value);
-                    }}
-                  />
-                </Form.Item> */}
+                <Row justify='center'>
+                  <Col flex={1}>
+                    <Title level={3}>Front:{''} </Title>
+                  </Col>
+                  <Col flex={10}>
+                    <Form.Item rules={[{ required: true }]}>
+                      <Input
+                        allowClear='true'
+                        size='medium'
+                        autoSize='true'
+                        value={front}
+                        onChange={(e) => {
+                          setFront(e.target.value);
+                        }}
+                      />
+                    </Form.Item>
+                  </Col>
+                </Row>
+                <Row justify='center'>
+                  <Col flex={1}>
+                    <Title level={3}>Back: </Title>
+                  </Col>
+                  <Col flex={10}>
+                    <Form.Item rules={[{ required: true }]}>
+                      <Input
+                        size='medium'
+                        value={back}
+                        onChange={(e) => {
+                          setBack(e.target.value);
+                        }}
+                      />
+                    </Form.Item>
+                  </Col>
+                </Row>
               </Form>
               <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
-                <Button onClick={onSubmit} type='primary' htmlType='submit'>
+                <Button
+                  onClick={onSubmit}
+                  type='primary'
+                  shape='round'
+                  size='large'
+                  htmlType='submit'
+                >
                   Save
                 </Button>
               </Form.Item>

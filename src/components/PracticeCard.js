@@ -1,14 +1,14 @@
 import React from 'react';
-import { Form, Input, Typography, Layout, Row, Col, Button, Card } from 'antd';
+import { Divider, Typography, Layout, Card } from 'antd';
 const { Header, Footer, Sider, Content } = Layout;
 const { Title } = Typography;
 const cardStyle = {
-  width: '400px',
+  width: '430px',
   // height: 'px',
 
-  height: 200,
+  height: '300px',
   borderRadius: '16px',
-  marginRight: '24px',
+  // marginRight: '24px',
   padding: '20px 40px',
   boxShadow: '5px 8px 24px 5px rgba(208, 216, 243, 0.6)',
 };
@@ -18,7 +18,11 @@ function SingleCard(props) {
   console.log('inside SingleCard, spotifySongUri=', props.spotifySongUri);
   return (
     <div>
-      <Card title={props.word} align='middle' style={cardStyle}>
+      <Card align='middle' style={cardStyle}>
+        <Divider>
+          <Title>{props.word}</Title>
+        </Divider>
+
         <iframe
           src={srcUrl}
           width='300'
