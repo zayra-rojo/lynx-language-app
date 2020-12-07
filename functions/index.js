@@ -13,10 +13,11 @@ app.post('/addFlashcard', async (req, res) => {
   if (!req.body) return res.sendStatus(400);
 
   const userUid = req.body.uid;
+
   const musixmatchParams = {
-    front: req.body.front,
     q_lyrics: req.body.front,
-    language: req.body.language ? req.body.language : 'fr',
+    language_id: req.body.language_id ? req.body.language_id : 'en',
+    genre_id: req.body.genre_id ? req.body.genre_id : '',
     song: 'placeholder',
   };
   await getSongFromMusixmatch(musixmatchParams);
@@ -35,19 +36,25 @@ app.post('/addFlashcard', async (req, res) => {
 exports.webAPI = functions.https.onRequest(app);
 
 /* Helper functions */
-async function getSongFromMusixmatch(musixmatchParams) {
+
+async function getSongFromMusixmatch(params) {
+  if (params.genre_id != 0)
+    params.genre_id = '&f_music_genre_id=' + params.genre_id;
+  else params.genre_id = '';
+
+  if (params.language_id == null) params.language_id = 'fr';
+
   let url = `https://api.musixmatch.com/ws/1.1/track.search?format=json&q_lyrics=${encodeURI(
-    musixmatchParams.q_lyrics
-  )}&f_lyrics_language=${
-    musixmatchParams.language
+    params.q_lyrics
+  )}${params.genre_id}&f_lyrics_language=${
+    params.language_id
   }&s_track_rating=desc&page_size=1&page=1&apikey=${config.MUSIXMATCH_API_KEY}
     `;
-
+  console.log('inside getSongFromMusixmatch, url=', url);
   await axios
     .get(url)
     .then((response) => {
-      musixmatchParams.song =
-        response.data.message.body.track_list[0].track.track_name;
+      params.song = response.data.message.body.track_list[0].track.track_name;
     })
     .catch((error) => console.log('error in axios.get, ', error));
 }

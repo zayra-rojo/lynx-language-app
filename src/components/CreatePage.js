@@ -27,16 +27,42 @@ function CreatePage() {
   const [back, setBack] = React.useState(null);
   const [source, setSource] = React.useState(null);
 
+  const getUserSettings = async () => {
+    const uid = auth.currentUser.uid;
+    let ans;
+    await firestore
+      .collection('users')
+      .doc(uid)
+      .collection('settings')
+      .doc('music-preferences')
+      .get()
+      .then(function (doc) {
+        if (doc.exists) {
+          console.log('inside CreatePage.js, document data: ', doc.data());
+          ans = doc.data();
+        } else {
+          console.log(console.log('no such document!'));
+        }
+      });
+
+    return ans;
+  };
+
   const onSubmit = async () => {
     // If logged in user doesn't have its own document (containing uid and subcollection containing all flashcards)
     // then create it.
     const uid = auth.currentUser.uid;
+    const userSettings = await getUserSettings();
+    console.log('in onSubmit, userSettings=', userSettings);
+
     const data = {
       front: front,
       back: back,
       song: '',
       source: source,
       uid: uid,
+      language_id: userSettings.language_id,
+      genre_id: userSettings.genre_id,
     };
     console.log('onSubmit...');
     console.log(data);

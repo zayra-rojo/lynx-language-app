@@ -11,6 +11,7 @@ import CreatePage from './CreatePage';
 import DeckPage from './DeckPage';
 import PracticePage from './PracticePage';
 import Dashboard from './Dashboard';
+import SettingsPage from './SettingsPage';
 import './layout.css';
 const { Header, Footer, Sider, Content } = Layout;
 const { Item } = Menu;
@@ -46,6 +47,11 @@ function LayoutPage() {
                 <span>Practice</span>
               </NavLink>
             </Item>
+            <Item key='5' className='customclass'>
+              <NavLink to='/settings'>
+                <span>Settings</span>
+              </NavLink>
+            </Item>
           </Menu>
         </Sider>
         <Layout>
@@ -70,6 +76,9 @@ function LayoutPage() {
                 </Route>
                 <Route path='/practice'>
                   <PracticePage />
+                </Route>
+                <Route path='/settings'>
+                  <SettingsPage />
                 </Route>
               </Switch>
             </div>
