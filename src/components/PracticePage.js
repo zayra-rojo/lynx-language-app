@@ -1,10 +1,25 @@
 import React from 'react';
 import PracticeCard from './PracticeCard';
 import { auth, firestore } from '../utils/firebase';
+import firebase from 'firebase/app';
 import { Typography, Layout, Menu, Row, Col, Button, Empty, Card } from 'antd';
-import { LeftOutlined, RightOutlined } from '@ant-design/icons';
+import {
+  AudioMutedOutlined,
+  LeftOutlined,
+  RightOutlined,
+} from '@ant-design/icons';
 const { Title } = Typography;
 const { Header, Footer, Sider, Content } = Layout;
+
+const DAYS = {
+  1: 'monday',
+  2: 'tuesday',
+  3: 'wednesday',
+  4: 'thursday',
+  5: 'friday',
+  6: 'saturday',
+  7: 'sunday',
+};
 
 function PracticePage() {
   const [deck, setDeck] = React.useState([]);
@@ -13,6 +28,7 @@ function PracticePage() {
   const [isLoading, setIsLoading] = React.useState(true);
   const [spotifyUri, setSpotifyUri] = React.useState();
   const [isEmpty, setIsEmpty] = React.useState(false);
+  const [isFlipped, setIsFlipped] = React.useState(false);
 
   React.useEffect(() => {
     const uid = auth.currentUser.uid;
@@ -42,15 +58,33 @@ function PracticePage() {
     fetchData();
   }, []);
 
+  const incrementNumCardsPracticed = () => {
+    let d = new Date();
+    var n = d.getDay();
+
+    // DAYS[n]
+    console.log('todays day: ', DAYS[n]);
+
+    const uid = auth.currentUser.uid;
+    const statsRef = firestore
+      .collection('users')
+      .doc(uid)
+      .collection('practice-frequency-per-day')
+      .doc(DAYS[n]);
+
+    statsRef.update({
+      frequency: firebase.firestore.FieldValue.increment(1),
+    });
+  };
+
   const onFlip = (e) => {
     e.preventDefault();
-    // set word to be the back of flashcard (english meaning)
-    // gets the object that contains the current word
-    console.log('Printing all flashcards first... ', deck);
-    let result = deck[index];
 
+    let result = deck[index];
     word == result.front ? setWord(result.back) : setWord(result.front);
     setSpotifyUri(result.spotifySongUri);
+    if (!isFlipped) incrementNumCardsPracticed();
+    setIsFlipped(true);
   };
 
   const onNext = (e) => {
@@ -68,6 +102,7 @@ function PracticePage() {
       setIndex(index + 1);
       console.log('new index index (may be async): ', index);
     }
+    setIsFlipped(false);
   };
 
   const onBack = (e) => {
@@ -83,6 +118,7 @@ function PracticePage() {
       setSpotifyUri(deck[index - 1].spotifySongUri);
       setIndex(index - 1);
     }
+    setIsFlipped(false);
   };
 
   const onStart = (e) => {
