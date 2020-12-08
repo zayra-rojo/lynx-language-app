@@ -1,6 +1,7 @@
 const express = require('express');
 var axios = require('axios');
 const functions = require('firebase-functions');
+
 const admin = require('firebase-admin');
 const cors = require('cors')({ origin: true });
 const config = require('./config.js');
@@ -72,6 +73,17 @@ async function saveFlashcard(user_uid, cardInfo) {
       // source: cardInfo.source,
       spotifySongUri: cardInfo.spotifySongUri,
     });
+
+  const flashcardSettingsRef = await admin
+    .firestore()
+    .collection('users')
+    .doc(user_uid)
+    .collection('settings')
+    .doc('flashcard-settings');
+
+  flashcardSettingsRef.update({
+    num_flashcards: admin.firestore.FieldValue.increment(1),
+  });
 }
 
 async function getSpotifyAccessToken() {
