@@ -12,6 +12,7 @@ import {
   Button,
   Card,
 } from 'antd';
+import { isElement } from 'react-dom/test-utils';
 const { Header, Footer, Sider, Content } = Layout;
 const { Title } = Typography;
 
@@ -32,15 +33,27 @@ const cardStyle = {
   padding: '10px 20px',
   boxShadow: '5px 8px 24px 5px rgba(208, 216, 243, 0.6)',
 };
+const langCodes = {
+  fr: 'French',
+  it: 'Italian',
+  ko: 'Korean',
+  de: 'German',
+};
 function CreatePage() {
   const [front, setFront] = React.useState(null);
   const [back, setBack] = React.useState(null);
+  const [foreignLang, setForeignLang] = React.useState();
+  const [loading, setIsLoading] = React.useState(true);
   // const [source, setSource] = React.useState(null);
+  React.useEffect(() => {
+    const userSettings = getUserSettings();
+    console.log('in onSubmit, userSettings=', userSettings);
+  });
 
-  const getUserSettings = async () => {
+  const getUserSettings = () => {
     const uid = auth.currentUser.uid;
     let ans;
-    await firestore
+    firestore
       .collection('users')
       .doc(uid)
       .collection('settings')
@@ -50,6 +63,8 @@ function CreatePage() {
         if (doc.exists) {
           console.log('inside CreatePage.js, document data: ', doc.data());
           ans = doc.data();
+          setForeignLang(langCodes[ans.language_id]);
+          setIsLoading(false);
         } else {
           console.log(console.log('no such document!'));
         }
@@ -62,7 +77,7 @@ function CreatePage() {
     // If logged in user doesn't have its own document (containing uid and subcollection containing all flashcards)
     // then create it.
     const uid = auth.currentUser.uid;
-    const userSettings = await getUserSettings();
+    const userSettings = getUserSettings();
     console.log('in onSubmit, userSettings=', userSettings);
 
     const data = {
@@ -96,66 +111,68 @@ function CreatePage() {
         // align='middle'
       >
         <Col>
-          <Card style={cardStyle}>
-            <Divider>
-              <Title level={2}>Create a flashcard</Title>
-            </Divider>
+          {loading ? null : (
+            <Card style={cardStyle}>
+              <Divider>
+                <Title level={2}>Create a flashcard</Title>
+              </Divider>
 
-            <div>
-              <Form
-                {...layout}
-                name='nest-messages'
-                // onFinish={onSubmit}
-                validateMessages={validateMessages}
-              >
-                <Row justify='center'>
-                  <Col flex={1}>
-                    <Title level={3}>Front:{''} </Title>
-                  </Col>
-                  <Col flex={10}>
-                    <Form.Item rules={[{ required: true }]}>
-                      <Input
-                        allowClear='true'
-                        size='medium'
-                        autoSize='true'
-                        value={front}
-                        onChange={(e) => {
-                          setFront(e.target.value);
-                        }}
-                      />
-                    </Form.Item>
-                  </Col>
-                </Row>
-                <Row justify='center'>
-                  <Col flex={1}>
-                    <Title level={3}>Back: </Title>
-                  </Col>
-                  <Col flex={10}>
-                    <Form.Item rules={[{ required: true }]}>
-                      <Input
-                        size='medium'
-                        value={back}
-                        onChange={(e) => {
-                          setBack(e.target.value);
-                        }}
-                      />
-                    </Form.Item>
-                  </Col>
-                </Row>
-              </Form>
-              <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
-                <Button
-                  onClick={onSubmit}
-                  type='primary'
-                  shape='round'
-                  size='large'
-                  htmlType='submit'
+              <div>
+                <Form
+                  {...layout}
+                  name='nest-messages'
+                  // onFinish={onSubmit}
+                  validateMessages={validateMessages}
                 >
-                  Save
-                </Button>
-              </Form.Item>
-            </div>
-          </Card>
+                  <Row justify='center'>
+                    <Col flex={1}>
+                      <Title level={3}>{foreignLang + ' word: '}</Title>
+                    </Col>
+                    <Col flex={10}>
+                      <Form.Item rules={[{ required: true }]}>
+                        <Input
+                          allowClear='true'
+                          size='medium'
+                          autoSize='true'
+                          value={front}
+                          onChange={(e) => {
+                            setFront(e.target.value);
+                          }}
+                        />
+                      </Form.Item>
+                    </Col>
+                  </Row>
+                  <Row justify='center'>
+                    <Col flex={1}>
+                      <Title level={3}>English word: </Title>
+                    </Col>
+                    <Col flex={10}>
+                      <Form.Item rules={[{ required: true }]}>
+                        <Input
+                          size='medium'
+                          value={back}
+                          onChange={(e) => {
+                            setBack(e.target.value);
+                          }}
+                        />
+                      </Form.Item>
+                    </Col>
+                  </Row>
+                </Form>
+                <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
+                  <Button
+                    onClick={onSubmit}
+                    type='primary'
+                    shape='round'
+                    size='large'
+                    htmlType='submit'
+                  >
+                    Save
+                  </Button>
+                </Form.Item>
+              </div>
+            </Card>
+          )}
         </Col>
       </Row>
     </div>

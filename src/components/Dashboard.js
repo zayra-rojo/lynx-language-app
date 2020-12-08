@@ -18,7 +18,7 @@ const cardStyle = {
 };
 function Dashboard() {
   const [numCards, setNumCards] = React.useState(0);
-
+  const [loading, setIsLoading] = React.useState(true);
   const cardInfo = {
     word: 'vieron',
     songName: 'Hawai',
@@ -35,7 +35,7 @@ function Dashboard() {
       .then(function (doc) {
         if (doc.exists) {
           setNumCards(doc.data().num_flashcards);
-          console.log('number of cards=', doc.data().num_flashcards);
+          setIsLoading(false);
         }
       });
   }, []);
@@ -52,7 +52,7 @@ function Dashboard() {
           <Card hoverable={true} style={cardStyle} align='middle'>
             <Title level={4}>{'You have'}</Title>
             <Title level={1}>
-              <b>{numCards}</b>
+              <b>{loading ? null : numCards}</b>
             </Title>
             <Title level={4}>{'flashcards'}</Title>
           </Card>
