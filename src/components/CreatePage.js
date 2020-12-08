@@ -25,7 +25,7 @@ const validateMessages = {
   required: '${label} is required!',
 };
 const cardStyle = {
-  width: '430px',
+  width: '450px',
   // height: 'px',
 
   borderRadius: '16px',
@@ -36,7 +36,7 @@ const cardStyle = {
 const langCodes = {
   fr: 'French',
   it: 'Italian',
-  ko: 'Korean',
+  es: 'Spanish',
   de: 'German',
 };
 function CreatePage() {

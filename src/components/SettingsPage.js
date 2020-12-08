@@ -16,7 +16,7 @@ const cardStyle = {
 const langCodes = {
   fr: 'French',
   it: 'Italian',
-  ko: 'Korean',
+  es: 'Spanish',
   de: 'German',
 };
 const genreCodes = {
@@ -70,7 +70,7 @@ function SettingsPage() {
       <Menu.Item key='it'>Italian</Menu.Item>
       <Menu.Item key='de'>German</Menu.Item>
       <Menu.Item key='fr'>French</Menu.Item>
-      <Menu.Item key='ko'>Korean</Menu.Item>
+      <Menu.Item key='es'>Spanish</Menu.Item>
     </Menu>
   );
   const genreDropdownMenu = (
