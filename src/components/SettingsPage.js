@@ -158,6 +158,13 @@ function SettingsPage() {
           </Dropdown>
         </Col>
       </Row>
+      <Row gutter={[16, 48]}>
+        <Col>
+          <Button onClick={() => auth.signOut()} type='primary' danger>
+            Signout
+          </Button>
+        </Col>
+      </Row>
     </div>
   );
 }

@@ -24,7 +24,6 @@ function Dashboard() {
   };
   return (
     <div align='middle'>
-      {/* <Title>Dashboard</Title> */}
       <Row gutter={[16, 48]}>
         <Col>
           <Title level={1}>{'Hello, ' + auth.currentUser.displayName}</Title>
@@ -39,10 +38,3 @@ function Dashboard() {
   );
 }
 export default Dashboard;
-
-{
-  /* <h1>Welcome {auth.currentUser.displayName}</h1>
-      <h1>Zayra's uid: {auth.currentUser.uid}</h1> 
-          <button onClick={() => auth.signOut()}>Sign out</button>
-*/
-}
