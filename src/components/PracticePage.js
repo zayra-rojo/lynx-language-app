@@ -12,7 +12,7 @@ function PracticePage() {
   const [index, setIndex] = React.useState(0);
   const [isLoading, setIsLoading] = React.useState(true);
   const [spotifyUri, setSpotifyUri] = React.useState();
-  const [isEmpty, setIsEmpty] = React.useState(true);
+  const [isEmpty, setIsEmpty] = React.useState(false);
 
   React.useEffect(() => {
     const uid = auth.currentUser.uid;
@@ -34,7 +34,7 @@ function PracticePage() {
           setDeck(data);
           setIsLoading(false);
           console.log('data.length=', data.length);
-          if (data.length != 0) setIsEmpty(false);
+          if (data.length == 0) setIsEmpty(true);
         })
         .catch((err) => console.log('err', err));
     };
@@ -99,6 +99,7 @@ function PracticePage() {
 
   const setInitial = () => {
     if (word == null && deck.length != 0) {
+      setIsEmpty(false);
       setWord(deck[0].front);
       setSpotifyUri(deck[0].spotifySongUri);
     } else if (deck.length != 0) {
@@ -119,9 +120,7 @@ function PracticePage() {
     return (
       <>
         {' '}
-        {isLoading ? (
-          <Empty />
-        ) : (
+        {isLoading ? null : (
           <div align='middle'>
             <Title level={1}>Practice</Title>
             <Row justify='center' align='middle' gutter={[16, 16]}>

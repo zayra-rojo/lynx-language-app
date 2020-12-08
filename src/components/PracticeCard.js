@@ -2,6 +2,8 @@ import React from 'react';
 import { Divider, Typography, Layout, Card } from 'antd';
 const { Header, Footer, Sider, Content } = Layout;
 const { Title } = Typography;
+var Spinner = require('react-spinkit');
+
 const cardStyle = {
   width: '430px',
   // height: 'px',
@@ -14,17 +16,29 @@ const cardStyle = {
 };
 
 function SingleCard(props) {
+  const [isLoading, setIsLoading] = React.useState(true);
+
+  const hideSpinner = () => {
+    setIsLoading(false);
+  };
+
   let srcUrl = 'https://open.spotify.com/embed/track/' + props.spotifySongUri;
-  console.log('inside SingleCard, spotifySongUri=', props.spotifySongUri);
+
   return (
     <div>
       <Card align='middle' style={cardStyle}>
         <Divider>
           <Title>{props.word}</Title>
         </Divider>
-
+        {isLoading ? (
+          <Spinner name='line-scale-pulse-out-rapid' color='purple' />
+        ) : null}
         <iframe
           src={srcUrl}
+          style={
+            isLoading ? { visibility: 'hidden' } : { visibility: 'visible' }
+          }
+          onLoad={hideSpinner}
           width='300'
           height='80'
           frameborder='0'
