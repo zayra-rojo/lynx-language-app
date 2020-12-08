@@ -1,7 +1,7 @@
 import React from 'react';
 import PracticeCard from './PracticeCard';
 import { auth, firestore } from '../utils/firebase';
-import { Typography, Layout, Menu, Row, Col, Button, Card } from 'antd';
+import { Typography, Layout, Menu, Row, Col, Button, Empty, Card } from 'antd';
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 const { Title } = Typography;
 const { Header, Footer, Sider, Content } = Layout;
@@ -12,6 +12,7 @@ function PracticePage() {
   const [index, setIndex] = React.useState(0);
   const [isLoading, setIsLoading] = React.useState(true);
   const [spotifyUri, setSpotifyUri] = React.useState();
+  const [isEmpty, setIsEmpty] = React.useState(true);
 
   React.useEffect(() => {
     const uid = auth.currentUser.uid;
@@ -32,6 +33,8 @@ function PracticePage() {
           });
           setDeck(data);
           setIsLoading(false);
+          console.log('data.length=', data.length);
+          if (data.length != 0) setIsEmpty(false);
         })
         .catch((err) => console.log('err', err));
     };
@@ -95,62 +98,74 @@ function PracticePage() {
   };
 
   const setInitial = () => {
-    if (word == null) {
+    if (word == null && deck.length != 0) {
       setWord(deck[0].front);
       setSpotifyUri(deck[0].spotifySongUri);
-    } else {
+    } else if (deck.length != 0) {
       setWord(null);
       setSpotifyUri(null);
+    } else {
     }
     console.log('running getInitial...');
   };
 
-  return (
-    <>
-      {isLoading ? null : (
-        <div align='middle'>
-          <Title level={1}>Practice</Title>
-          <Row justify='center' align='middle' gutter={[16, 16]}>
-            <Col>
-              <Title level={2}>
-                <b>{index + 1 + ' / ' + deck.length}</b>
-              </Title>
-            </Col>
-          </Row>
-          <Row justify='center' align='middle' gutter={[16, 16]}>
-            <Col>
-              <Button
-                type='primary'
-                shape='circle'
-                size='large'
-                htmlType='submit'
-                onClick={onBack}
-                icon={<LeftOutlined />}
-              ></Button>
-            </Col>
+  if (isEmpty) {
+    return (
+      <>
+        <Empty description={<span>Your deck is empty!</span>} />
+      </>
+    );
+  } else {
+    return (
+      <>
+        {' '}
+        {isLoading ? (
+          <Empty />
+        ) : (
+          <div align='middle'>
+            <Title level={1}>Practice</Title>
+            <Row justify='center' align='middle' gutter={[16, 16]}>
+              <Col>
+                <Title level={2}>
+                  <b>{index + 1 + ' / ' + deck.length}</b>
+                </Title>
+              </Col>
+            </Row>
+            <Row justify='center' align='middle' gutter={[16, 16]}>
+              <Col>
+                <Button
+                  type='primary'
+                  shape='circle'
+                  size='large'
+                  htmlType='submit'
+                  onClick={onBack}
+                  icon={<LeftOutlined />}
+                ></Button>
+              </Col>
 
-            <Col>
-              {word == null ? setInitial() : null}
-              <PracticeCard word={word} spotifySongUri={spotifyUri} />
-              <Button onClick={onFlip} type='primary' htmlType='submit'>
-                Flip
-              </Button>{' '}
-            </Col>
-            <Col>
-              <Button
-                type='primary'
-                shape='circle'
-                size='large'
-                htmlType='submit'
-                onClick={onNext}
-                icon={<RightOutlined />}
-              ></Button>
-            </Col>
-          </Row>
-        </div>
-      )}
-    </>
-  );
+              <Col>
+                {word == null ? setInitial() : null}
+                <PracticeCard word={word} spotifySongUri={spotifyUri} />
+                <Button onClick={onFlip} type='primary' htmlType='submit'>
+                  Flip
+                </Button>{' '}
+              </Col>
+              <Col>
+                <Button
+                  type='primary'
+                  shape='circle'
+                  size='large'
+                  htmlType='submit'
+                  onClick={onNext}
+                  icon={<RightOutlined />}
+                ></Button>
+              </Col>
+            </Row>
+          </div>
+        )}
+      </>
+    );
+  }
 }
 
 export default PracticePage;
