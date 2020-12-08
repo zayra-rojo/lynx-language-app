@@ -10,6 +10,44 @@ const app = express();
 app.use(cors);
 admin.initializeApp();
 
+exports.scheduledFunction = functions.pubsub
+  .schedule('every monday 01:00')
+  .onRun((context) => {
+    console.log('inside scheduledFunction, this will run every 7 days');
+
+    // Reset frequency of all days to zero
+    admin
+      .firestore()
+      .document('users/{userId}/practice-frequency-per-day/monday')
+      .set({ frequency: 0 });
+    admin
+      .firestore()
+      .document('users/{userId}/practice-frequency-per-day/tuesday')
+      .set({ frequency: 0 });
+    admin
+      .firestore()
+      .document('users/{userId}/practice-frequency-per-day/wednesday')
+      .set({ frequency: 0 });
+    admin
+      .firestore()
+      .document('users/{userId}/practice-frequency-per-day/thursday')
+      .set({ frequency: 0 });
+    admin
+      .firestore()
+      .document('users/{userId}/practice-frequency-per-day/friday')
+      .set({ frequency: 0 });
+    admin
+      .firestore()
+      .document('users/{userId}/practice-frequency-per-day/saturday')
+      .set({ frequency: 0 });
+    admin
+      .firestore()
+      .document('users/{userId}/practice-frequency-per-day/sunday')
+      .set({ frequency: 0 });
+
+    return null;
+  });
+
 app.post('/addFlashcard', async (req, res) => {
   if (!req.body) return res.sendStatus(400);
 
