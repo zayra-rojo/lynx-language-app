@@ -25,7 +25,7 @@ const validateMessages = {
   required: '${label} is required!',
 };
 const cardStyle = {
-  width: '450px',
+  width: '430px',
   // height: 'px',
 
   borderRadius: '16px',
@@ -43,6 +43,7 @@ function CreatePage() {
   const [front, setFront] = React.useState(null);
   const [back, setBack] = React.useState(null);
   const [foreignLang, setForeignLang] = React.useState();
+  const [genreId, setGenreId] = React.useState();
   const [loading, setIsLoading] = React.useState(true);
   // const [source, setSource] = React.useState(null);
   React.useEffect(() => {
@@ -61,7 +62,8 @@ function CreatePage() {
       .then(function (doc) {
         if (doc.exists) {
           ans = doc.data();
-          setForeignLang(langCodes[ans.language_id]);
+          setForeignLang(ans.language_id);
+          setGenreId(ans.genre_id);
           setIsLoading(false);
         } else {
           console.log(console.log('no such document!'));
@@ -75,7 +77,8 @@ function CreatePage() {
     // If logged in user doesn't have its own document (containing uid and subcollection containing all flashcards)
     // then create it.
     const uid = auth.currentUser.uid;
-    const userSettings = getUserSettings();
+    // const userSettings = getUserSettings();
+    // console.log('in onSubmit, userSettings=', userSettings);
 
     const data = {
       front: front,
@@ -83,9 +86,10 @@ function CreatePage() {
       song: '',
       // source: source,
       uid: uid,
-      language_id: userSettings.language_id,
-      genre_id: userSettings.genre_id,
+      language_id: foreignLang,
+      genre_id: genreId,
     };
+    console.log('onSubmit...');
     setBack('');
     setFront('');
     console.log(data);
@@ -122,7 +126,9 @@ function CreatePage() {
                 >
                   <Row justify='center'>
                     <Col flex={1}>
-                      <Title level={3}>{foreignLang + ' word: '}</Title>
+                      <Title level={3}>
+                        {langCodes[foreignLang] + ' word: '}
+                      </Title>
                     </Col>
                     <Col flex={10}>
                       <Form.Item rules={[{ required: true }]}>
