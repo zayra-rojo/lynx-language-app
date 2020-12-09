@@ -58,8 +58,8 @@ function PracticeFrequencyGraph() {
         label: '# of flashcards practiced this week',
         data: frequencyData,
         fill: false,
-        backgroundColor: 'rgb(255, 99, 132)',
-        borderColor: 'rgba(255, 99, 132, 0.2)',
+        backgroundColor: 'rgb(80, 29, 218)',
+        borderColor: 'rgba(168, 139, 247, 0.2)',
       },
     ],
   };
@@ -88,7 +88,7 @@ function PracticeFrequencyGraph() {
   return (
     <>
       <div className='header'>
-        <h1 className='title'>Line Chart</h1>
+        <h1 className='title'>Your progress</h1>
         <div className='links'></div>
       </div>
       {!loading ? (

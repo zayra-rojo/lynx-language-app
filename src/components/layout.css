@@ -13,10 +13,15 @@
 }
 div.flashcard-count {
   font-size: 110px;
+  color: #3e2091;
 }
 div.page-header {
   font-size: 200px;
 }
 div.dashboard-greeting {
   font-size: 80px;
+}
+div.language-card {
+  font-size: 60px;
+  color: #3e2091;
 }

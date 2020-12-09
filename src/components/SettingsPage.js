@@ -121,7 +121,9 @@ function SettingsPage() {
   return (
     <div align='middle'>
       <Title>Settings</Title>
-      <Title level={3}>Edit your music recommendation options </Title>
+      <Title level={3}>
+        Edit your music recommendation options and target language{' '}
+      </Title>
 
       <Row gutter={[16, 48]}>
         <Col>

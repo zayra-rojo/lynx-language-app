@@ -14,17 +14,31 @@ const cardStyle = {
   padding: '20px 40px',
   boxShadow: '5px 8px 24px 5px rgba(208, 216, 243, 0.6)',
 };
-
-const cardGraphStyle = {
-  width: '800px',
+const langCardStyle = {
+  width: '400px',
   height: '370px',
   borderRadius: '16px',
   marginRight: '24px',
   padding: '20px 40px',
   boxShadow: '5px 8px 24px 5px rgba(208, 216, 243, 0.6)',
 };
+const cardGraphStyle = {
+  width: '700px',
+  height: '370px',
+  borderRadius: '16px',
+  marginRight: '24px',
+  padding: '20px 40px',
+  boxShadow: '5px 8px 24px 5px rgba(208, 216, 243, 0.6)',
+};
+const langCodes = {
+  fr: 'French',
+  it: 'Italian',
+  es: 'Spanish',
+  de: 'German',
+};
 function Dashboard() {
   const [numCards, setNumCards] = React.useState(0);
+  const [targetLang, setTargetLang] = React.useState();
   const [loading, setIsLoading] = React.useState(true);
   const cardInfo = {
     word: 'vieron',
@@ -42,6 +56,19 @@ function Dashboard() {
       .then(function (doc) {
         if (doc.exists) {
           setNumCards(doc.data().num_flashcards);
+          // setIsLoading(false);
+        }
+      });
+
+    firestore
+      .collection('users')
+      .doc(auth.currentUser.uid)
+      .collection('settings')
+      .doc('music-preferences')
+      .get()
+      .then(function (doc) {
+        if (doc.exists) {
+          setTargetLang(langCodes[doc.data().language_id]);
           setIsLoading(false);
         }
       });
@@ -71,6 +98,14 @@ function Dashboard() {
         <Col>
           <Card hoverable={false} style={cardGraphStyle} align='middle'>
             <PracticeFrequencyGraph />
+          </Card>
+        </Col>
+        <Col>
+          <Card hoverable={true} style={langCardStyle} align='middle'>
+            <Title level={2}>You are currently learning</Title>
+            <div class='language-card'>
+              <b>{targetLang}</b>
+            </div>
           </Card>
         </Col>
       </Row>
