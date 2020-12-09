@@ -10,6 +10,111 @@ const app = express();
 app.use(cors);
 admin.initializeApp();
 
+exports.initializePracticeFrequencies = functions.auth
+  .user()
+  .onCreate((user) => {
+    console.log('inside initializePracticeFrequency, user=', user);
+
+    // create a flashcard-frequencies collection and set daily frequencies to zero
+    let promises = [];
+    let mondayFrequency = admin
+      .firestore()
+      .collection('users')
+      .doc(user.uid)
+      .collection('practice-frequency-per-day')
+      .doc('monday')
+      .set({
+        frequency: 0,
+      });
+    promises.push(mondayFrequency);
+
+    let tuesdayFrequency = admin
+      .firestore()
+      .collection('users')
+      .doc(user.uid)
+      .collection('practice-frequency-per-day')
+      .doc('tuesday')
+      .set({
+        frequency: 0,
+      });
+    promises.push(tuesdayFrequency);
+
+    let wednesdayFrequency = admin
+      .firestore()
+      .collection('users')
+      .doc(user.uid)
+      .collection('practice-frequency-per-day')
+      .doc('wednesday')
+      .set({
+        frequency: 0,
+      });
+    promises.push(wednesdayFrequency);
+
+    let thursdayFrequency = admin
+      .firestore()
+      .collection('users')
+      .doc(user.uid)
+      .collection('practice-frequency-per-day')
+      .doc('thursday')
+      .set({
+        frequency: 0,
+      });
+    promises.push(thursdayFrequency);
+
+    let fridayFrequency = admin
+      .firestore()
+      .collection('users')
+      .doc(user.uid)
+      .collection('practice-frequency-per-day')
+      .doc('friday')
+      .set({
+        frequency: 0,
+      });
+    promises.push(fridayFrequency);
+
+    let saturdayFrequency = admin
+      .firestore()
+      .collection('users')
+      .doc(user.uid)
+      .collection('practice-frequency-per-day')
+      .doc('saturday')
+      .set({
+        frequency: 0,
+      });
+    promises.push(saturdayFrequency);
+
+    let sundayFrequency = admin
+      .firestore()
+      .collection('users')
+      .doc(user.uid)
+      .collection('practice-frequency-per-day')
+      .doc('sunday')
+      .set({
+        frequency: 0,
+      });
+    promises.push(sundayFrequency);
+
+    // Create flashcard settings doc w/
+    let flashcardSettingsIntialize = admin
+      .firestore()
+      .collection('users')
+      .doc(user.uid)
+      .collection('settings')
+      .doc('flashcard-settings')
+      .set({ num_flashcards: 0 });
+    promises.push(flashcardSettingsIntialize);
+
+    // Initialize default music preferences
+    let musicPreferencesInitalize = admin
+      .firestore()
+      .collection('users')
+      .doc(user.uid)
+      .collection('settings')
+      .doc('music-preferences')
+      .set({ language_id: 'es', genre_id: '0' });
+
+    return Promise.all(promises);
+  });
 exports.scheduledFunction = functions.pubsub
   .schedule('every monday 01:00')
   .onRun((context) => {
