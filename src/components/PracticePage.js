@@ -49,7 +49,6 @@ function PracticePage() {
           });
           setDeck(data);
           setIsLoading(false);
-          console.log('data.length=', data.length);
           if (data.length == 0) setIsEmpty(true);
         })
         .catch((err) => console.log('err', err));
@@ -61,9 +60,6 @@ function PracticePage() {
   const incrementNumCardsPracticed = () => {
     let d = new Date();
     var n = d.getDay();
-
-    // DAYS[n]
-    console.log('todays day: ', DAYS[n]);
 
     const uid = auth.currentUser.uid;
     const statsRef = firestore
@@ -95,25 +91,19 @@ function PracticePage() {
       setSpotifyUri(deck[0].spotifySongUri);
       setIndex(0);
     } else {
-      console.log('previous index: ', index);
       setWord(deck[index + 1].front);
       setSpotifyUri(deck[index + 1].spotifySongUri);
-      console.log('in onNext, spotifyuri=', spotifyUri);
       setIndex(index + 1);
-      console.log('new index index (may be async): ', index);
     }
     setIsFlipped(false);
   };
 
   const onBack = (e) => {
     e.preventDefault();
-    console.log('in onBack...');
 
     if (index - 1 < 0) {
       // do nothing
-      console.log('cant go back, index=', index);
     } else {
-      console.log('going back...');
       setWord(deck[index - 1].front);
       setSpotifyUri(deck[index - 1].spotifySongUri);
       setIndex(index - 1);
@@ -123,12 +113,10 @@ function PracticePage() {
 
   const onStart = (e) => {
     e.preventDefault();
-    console.log('in onStart, print deck', deck);
-    console.log('deck[0]', deck[0]);
+
     if (word == null) {
       setWord(deck[0].front);
       setSpotifyUri(deck[0].spotifySongUri);
-      console.log('in onStart, spotifyuri=', spotifyUri);
     }
     setIndex(0);
   };
@@ -143,7 +131,6 @@ function PracticePage() {
       setSpotifyUri(null);
     } else {
     }
-    console.log('running getInitial...');
   };
 
   if (isEmpty) {

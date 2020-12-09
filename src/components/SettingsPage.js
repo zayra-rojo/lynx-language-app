@@ -101,14 +101,9 @@ function SettingsPage() {
         .get()
         .then(function (doc) {
           if (doc.exists) {
-            console.log('document data: ', doc.data());
-
             setLanguage(doc.data().language_id);
             setGenre(doc.data().genre_id);
-            console.log(
-              'in settings page, inside userEffect, printing settings: ',
-              language
-            );
+
           } else {
             console.log(console.log('no such document!'));
           }

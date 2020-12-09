@@ -38,7 +38,6 @@ function DeckPage() {
 
       setDeck(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
       setIsLoading(false);
-      console.log('data.length=', data.length);
       if (data.length == 0) setIsEmpty(true);
     };
 

@@ -47,7 +47,6 @@ function CreatePage() {
   // const [source, setSource] = React.useState(null);
   React.useEffect(() => {
     const userSettings = getUserSettings();
-    console.log('in onSubmit, userSettings=', userSettings);
   });
 
   const getUserSettings = () => {
@@ -61,7 +60,6 @@ function CreatePage() {
       .get()
       .then(function (doc) {
         if (doc.exists) {
-          console.log('inside CreatePage.js, document data: ', doc.data());
           ans = doc.data();
           setForeignLang(langCodes[ans.language_id]);
           setIsLoading(false);
@@ -78,7 +76,6 @@ function CreatePage() {
     // then create it.
     const uid = auth.currentUser.uid;
     const userSettings = getUserSettings();
-    console.log('in onSubmit, userSettings=', userSettings);
 
     const data = {
       front: front,
@@ -89,7 +86,6 @@ function CreatePage() {
       language_id: userSettings.language_id,
       genre_id: userSettings.genre_id,
     };
-    console.log('onSubmit...');
     setBack('');
     setFront('');
     console.log(data);
