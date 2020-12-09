@@ -1,16 +1,23 @@
 import React from 'react';
 import { auth, firestore } from '../utils/firebase';
 import { Layout, Typography, Row, Col, Button, Card } from 'antd';
-import CardWithSong from './CardWithSong';
+import PracticeFrequencyGraph from './PracticeFrequencyGraph';
 const { Title } = Typography;
 
 const { Header, Footer, Sider, Content } = Layout;
 
 const cardStyle = {
   width: '300px',
-  // height: 'px',
+  height: '370px',
+  borderRadius: '16px',
+  marginRight: '24px',
+  padding: '20px 40px',
+  boxShadow: '5px 8px 24px 5px rgba(208, 216, 243, 0.6)',
+};
 
-  // height: 400,
+const cardGraphStyle = {
+  width: '800px',
+  height: '370px',
   borderRadius: '16px',
   marginRight: '24px',
   padding: '20px 40px',
@@ -44,17 +51,26 @@ function Dashboard() {
     <div align='middle'>
       <Row gutter={[16, 48]}>
         <Col>
-          <Title level={1}>{'Hello, ' + auth.currentUser.displayName}</Title>
+          <div class='dashboard-greeting'>
+            {'Hello, ' + auth.currentUser.displayName}
+          </div>
         </Col>
       </Row>
       <Row>
         <Col>
           <Card hoverable={true} style={cardStyle} align='middle'>
-            <Title level={4}>{'You have'}</Title>
-            <Title level={1}>
+            <Title level={2}>{'You have'}</Title>
+
+            <div class='flashcard-count'>
               <b>{loading ? null : numCards}</b>
-            </Title>
-            <Title level={4}>{'flashcards'}</Title>
+            </div>
+
+            <Title level={2}>{'flashcards'}</Title>
+          </Card>
+        </Col>
+        <Col>
+          <Card hoverable={false} style={cardGraphStyle} align='middle'>
+            <PracticeFrequencyGraph />
           </Card>
         </Col>
       </Row>

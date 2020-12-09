@@ -11,3 +11,12 @@
   background: url(../images/pulse-loader.gif) center center no-repeat;
   height: 100%;
 }
+div.flashcard-count {
+  font-size: 110px;
+}
+div.page-header {
+  font-size: 200px;
+}
+div.dashboard-greeting {
+  font-size: 80px;
+}
