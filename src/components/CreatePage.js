@@ -25,7 +25,7 @@ const validateMessages = {
   required: '${label} is required!',
 };
 const cardStyle = {
-  width: '430px',
+  width: '440px',
   // height: 'px',
 
   borderRadius: '16px',
