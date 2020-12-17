@@ -2,14 +2,9 @@ import React from 'react';
 import PracticeCard from './PracticeCard';
 import { auth, firestore } from '../utils/firebase';
 import firebase from 'firebase/app';
-import { Typography, Layout, Menu, Row, Col, Button, Empty, Card } from 'antd';
-import {
-  AudioMutedOutlined,
-  LeftOutlined,
-  RightOutlined,
-} from '@ant-design/icons';
+import { Typography, Row, Col, Button, Empty } from 'antd';
+import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 const { Title } = Typography;
-const { Header, Footer, Sider, Content } = Layout;
 
 const DAYS = {
   1: 'monday',

@@ -112,7 +112,7 @@ exports.initializePracticeFrequencies = functions.auth
       .collection('settings')
       .doc('music-preferences')
       .set({ language_id: 'es', genre_id: '0' });
-
+    promises.push(musicPreferencesInitalize);
     return Promise.all(promises);
   });
 exports.scheduledFunction = functions.pubsub

@@ -13,7 +13,7 @@ import PracticePage from './PracticePage';
 import Dashboard from './Dashboard';
 import SettingsPage from './SettingsPage';
 import './layout.css';
-const { Header, Footer, Sider, Content } = Layout;
+const { Header, Sider, Content } = Layout;
 const { Item } = Menu;
 
 function LayoutPage() {

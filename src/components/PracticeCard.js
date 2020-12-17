@@ -1,6 +1,5 @@
 import React from 'react';
-import { Divider, Typography, Layout, Card } from 'antd';
-const { Header, Footer, Sider, Content } = Layout;
+import { Divider, Typography, Card } from 'antd';
 const { Title } = Typography;
 var Spinner = require('react-spinkit');
 

@@ -1,6 +1,5 @@
 import React from 'react';
-import { Form, Input, Typography, Layout, Row, Col, Button, Card } from 'antd';
-import { OmitProps } from 'antd/lib/transfer/ListBody';
+import { Typography, Card } from 'antd';
 const { Title } = Typography;
 
 const cardStyle = {

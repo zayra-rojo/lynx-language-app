@@ -1,19 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { auth, firestore } from '../utils/firebase';
-import {
-  Divider,
-  Form,
-  Input,
-  Typography,
-  Layout,
-  Row,
-  Col,
-  Button,
-  Card,
-} from 'antd';
-import { isElement } from 'react-dom/test-utils';
-const { Header, Footer, Sider, Content } = Layout;
+import { Divider, Form, Input, Typography, Row, Col, Button, Card } from 'antd';
 const { Title } = Typography;
 
 const layout = {

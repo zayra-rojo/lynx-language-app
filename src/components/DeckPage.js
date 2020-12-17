@@ -2,12 +2,6 @@ import React from 'react';
 import { auth, firestore } from '../utils/firebase';
 import SingleCard from './Card';
 import { Typography, Skeleton, Row, Col, Card, Empty } from 'antd';
-import {
-  EditOutlined,
-  EllipsisOutlined,
-  SettingOutlined,
-} from '@ant-design/icons';
-const { Meta } = Card;
 const { Title } = Typography;
 
 const cardStyle = {

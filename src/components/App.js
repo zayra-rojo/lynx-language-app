@@ -1,14 +1,8 @@
 import React, { Component } from 'react';
-
 import SignIn from './SignIn';
 import LayoutPage from './Layout';
 import firebase from 'firebase';
-import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import { auth } from '../utils/firebase';
-import { Typography, Layout, Row, Col } from 'antd';
-const { Header, Footer, Sider, Content } = Layout;
-
-const { Title } = Typography;
 
 class App extends Component {
   state = { isSignedIn: false };

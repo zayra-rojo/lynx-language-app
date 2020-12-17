@@ -38,7 +38,7 @@ const langCodes = {
 };
 function Dashboard() {
   const [numCards, setNumCards] = React.useState(0);
-  const [targetLang, setTargetLang] = React.useState();
+  const [targetLang, setTargetLang] = React.useState(langCodes['es']);
   const [loading, setIsLoading] = React.useState(true);
   const cardInfo = {
     word: 'vieron',
@@ -89,7 +89,7 @@ function Dashboard() {
             <Title level={2}>{'You have'}</Title>
 
             <div class='flashcard-count'>
-              <b>{loading ? null : numCards}</b>
+              <b>{numCards}</b>
             </div>
 
             <Title level={2}>{'flashcards'}</Title>

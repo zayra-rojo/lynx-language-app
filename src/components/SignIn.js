@@ -1,14 +1,10 @@
 import React, { useState } from 'react';
-import { Link } from '@reach/router';
 import { Card } from 'antd';
 import '../style.css';
 import firebase from 'firebase';
 import { auth } from '../utils/firebase';
 import { Typography, Layout, Row, Col } from 'antd';
-
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
-
-const { Header, Footer, Sider, Content } = Layout;
 const { Title } = Typography;
 
 const uiConfig = {
